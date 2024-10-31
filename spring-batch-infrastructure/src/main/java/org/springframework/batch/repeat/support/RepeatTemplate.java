@@ -1,5 +1,5 @@
 /*
- * Copyright 2006-2023 the original author or authors.
+ * Copyright 2006-2024 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,7 @@ import org.springframework.util.Assert;
  *
  * @author Dave Syer
  * @author Mahmoud Ben Hassine
+ * @author Yong-Hyun Kim
  *
  */
 public class RepeatTemplate implements RepeatOperations {
@@ -393,14 +394,14 @@ public class RepeatTemplate implements RepeatOperations {
 
 	private boolean isMarkedComplete(RepeatContext context) {
 		boolean complete = context.isCompleteOnly();
-		if (context.getParent() != null) {
-			complete = complete || isMarkedComplete(context.getParent());
-		}
 		if (complete) {
 			logger.debug("Repeat is complete according to context alone.");
+			return true;
+		}
+		if (context.getParent() != null) {
+			complete = isMarkedComplete(context.getParent());
 		}
 		return complete;
-
 	}
 
 	/**
